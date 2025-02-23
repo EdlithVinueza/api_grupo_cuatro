@@ -46,8 +46,11 @@ public class UsuarioServiceImpl implements IUsuarioToService{
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-    public UsuarioTo buscarUsuarioToPorNombre(String nombre) {
-        Usuario tmp = iUsuarioRepository.seleccionarUsuarioPorNombre(nombre);
+    public UsuarioTo buscarUsuarioToPorNombreUsuario(String usuario) {
+        Usuario tmp = iUsuarioRepository.seleccionarUsuarioPorNombreUsuario(usuario);
+        if (tmp == null) {
+            return UsuarioTo.noExiste();
+        }
         return convertirUsuarioAUsuarioTo.apply(tmp);
     }
 
@@ -55,6 +58,9 @@ public class UsuarioServiceImpl implements IUsuarioToService{
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public UsuarioTo buscarUsuarioToPorId(Integer id) {
         Usuario tmp = iUsuarioRepository.seleccionarUsuarioPorId(id);
+        if(tmp == null){
+            return UsuarioTo.noExiste();
+        }
         return convertirUsuarioAUsuarioTo.apply(tmp);
     }
 
@@ -74,14 +80,14 @@ public class UsuarioServiceImpl implements IUsuarioToService{
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-    public void borrarUsuarioTo(String nombre) {
-        iUsuarioRepository.eliminarUsuario(nombre);
+    public void borrarUsuarioTo(String usuario) {
+        iUsuarioRepository.eliminarUsuario(usuario);
     }
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-    public UsuarioTo buscarPorUsuarioToYContrasenia(String UsuarioTo, String contrasenia) {
-        Usuario tmp = iUsuarioRepository.seleccionarPorUsuarioYContrasenia(UsuarioTo, contrasenia);
+    public UsuarioTo buscarPorUsuarioToYContrasenia(String usuario, String contrasenia) {
+        Usuario tmp = iUsuarioRepository.seleccionarPorUsuarioYContrasenia(usuario, contrasenia);
         return convertirUsuarioAUsuarioTo.apply(tmp);
     }
 

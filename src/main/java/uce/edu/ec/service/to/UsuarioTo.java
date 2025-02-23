@@ -26,7 +26,7 @@ public class UsuarioTo {
     private String correo;
 
 
-    public static UsuarioTo NoExiste(){
+    public static UsuarioTo noExiste(){
         UsuarioTo usuarioTo = new UsuarioTo();
         usuarioTo.setId(-1);
         usuarioTo.setUsuario("No existe");

@@ -4,7 +4,7 @@ import uce.edu.ec.repository.modelo.Usuario;
 
 public interface IUsuarioRepository {
 
-    Usuario seleccionarUsuarioPorNombre(String nombre);
+    Usuario seleccionarUsuarioPorNombreUsuario(String usuario);
 
     Usuario seleccionarUsuarioPorId(Integer id);
 
@@ -12,7 +12,7 @@ public interface IUsuarioRepository {
 
     void actualizarUsuario(Usuario usuario);
 
-    void eliminarUsuario(String nombre);
+    void eliminarUsuario(String usuario);
 
     Usuario seleccionarPorUsuarioYContrasenia(String usuario, String contrasenia);
 

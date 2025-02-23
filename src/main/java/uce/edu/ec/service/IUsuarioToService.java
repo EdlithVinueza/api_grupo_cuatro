@@ -4,7 +4,7 @@ import uce.edu.ec.service.to.UsuarioTo;
 
 public interface IUsuarioToService {
 
-    UsuarioTo buscarUsuarioToPorNombre(String nombre);
+    UsuarioTo buscarUsuarioToPorNombreUsuario(String usuario);
 
     UsuarioTo buscarUsuarioToPorId(Integer id);
 
@@ -12,8 +12,8 @@ public interface IUsuarioToService {
 
     void actualizarUsuarioTo(UsuarioTo UsuarioTo);
 
-    void borrarUsuarioTo(String nombre);
+    void borrarUsuarioTo(String usuario);
 
-    UsuarioTo buscarPorUsuarioToYContrasenia(String UsuarioTo, String contrasenia);
+    UsuarioTo buscarPorUsuarioToYContrasenia(String usuario, String contrasenia);
 
 }
