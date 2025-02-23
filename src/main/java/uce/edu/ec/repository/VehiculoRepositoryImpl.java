@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import uce.edu.ec.repository.modelo.Vehiculo;
 
@@ -29,7 +30,9 @@ public class VehiculoRepositoryImpl implements IVehiculoRepository {
     @Transactional(value = Transactional.TxType.NOT_SUPPORTED)
     public Vehiculo selecionarVehiculoPorPlaca(String placa) {
         try{
-            return this.entityManager.find(Vehiculo.class, placa);
+           TypedQuery<Vehiculo> query = this.entityManager.createQuery("SELECT v FROM Vehiculo v WHERE v.placa = :placa", Vehiculo.class);
+            query.setParameter("placa", placa);
+            return query.getSingleResult();
         } catch (Exception e){
             return Vehiculo.NoExiste();
         }
