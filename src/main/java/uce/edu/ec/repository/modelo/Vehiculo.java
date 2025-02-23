@@ -40,18 +40,6 @@ public class Vehiculo {
     @Column(name = "vehi_foto_url")
     private String fotoUrl;
 
-    public static Vehiculo NoExiste() {
-        Vehiculo vehiculo = new Vehiculo();
-        vehiculo.setId(-1);
-        vehiculo.setPlaca("No existe");
-        vehiculo.setMarca("No existe");
-        vehiculo.setFechaFabricacion("No existe");
-        vehiculo.setColor("No existe");
-        vehiculo.setCosto(-1);
-        vehiculo.setActivo(false);
-        vehiculo.setOculto(false);
-        vehiculo.setFotoUrl("No existe");
-        return vehiculo;
-    }
+
 
 }

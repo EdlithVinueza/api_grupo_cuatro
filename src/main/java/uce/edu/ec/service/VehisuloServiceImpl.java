@@ -2,6 +2,7 @@ package uce.edu.ec.service;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,7 +32,7 @@ public class VehisuloServiceImpl implements IVehisuloService {
         return vehiculo;
     };
 
-    /// Convertir de Vehiculo y Vehiculo
+    // Convertir de Vehiculo y VehiculoTo
     private Function<Vehiculo, VehiculoTo> convertirVehiculoAVehiculoTo = Vehiculo -> {
         VehiculoTo vehiculoTo = new VehiculoTo();
         vehiculoTo.setId(Vehiculo.getId());
@@ -50,35 +51,37 @@ public class VehisuloServiceImpl implements IVehisuloService {
     @Transactional(value = Transactional.TxType.REQUIRED)
     public List<VehiculoTo> buscarTodosLosVehiculos() {
         List<Vehiculo> tmp = iVehiculoRepository.seleccionarTodosLosVehiculos();
-        return tmp.stream().map(convertirVehiculoAVehiculoTo).toList();
+        if (tmp == null || tmp.isEmpty()) {
+            return List.of(VehiculoTo.noExiste());
+        }
+        return tmp.stream().map(convertirVehiculoAVehiculoTo).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public VehiculoTo buscarVehiculoPorPlaca(String placa) {
         Vehiculo tmp = iVehiculoRepository.selecionarVehiculoPorPlaca(placa);
+        if (tmp == null) {
+            return VehiculoTo.noExiste();
+        }
         return convertirVehiculoAVehiculoTo.apply(tmp);
     }
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public void guardarVehiculo(VehiculoTo vehiculoTo) {
-
         iVehiculoRepository.insertarVehiculo(convertirVehiculoToAVehiculo.apply(vehiculoTo));
     }
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public void actualizarVehiculo(VehiculoTo vehiculoTo) {
-
         iVehiculoRepository.actualizarVehiculo(convertirVehiculoToAVehiculo.apply(vehiculoTo));
     }
 
     @Override
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public void borrarVehiculo(String placa) {
-
         iVehiculoRepository.eliminarVehiculo(placa);
     }
-
 }

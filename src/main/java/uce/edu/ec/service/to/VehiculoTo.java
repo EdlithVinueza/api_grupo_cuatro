@@ -26,7 +26,7 @@ public class VehiculoTo {
   
     private String fotoUrl;
 
-    public static VehiculoTo NoExiste(){
+    public static VehiculoTo noExiste(){
         VehiculoTo vehiculoTo = new VehiculoTo();
         vehiculoTo.setId(-1);
         vehiculoTo.setPlaca("No existe");

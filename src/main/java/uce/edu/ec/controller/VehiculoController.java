@@ -36,13 +36,13 @@ public class VehiculoController {
             } else {
                 return Response.status(Response.Status.NOT_FOUND)
                         .header("mensaje", "Vehiculos no encontrados")
-                        .entity(VehiculoTo.NoExiste())
+                        .entity(VehiculoTo.noExiste())
                         .build();
             }
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
-                    .entity(VehiculoTo.NoExiste())
+                    .entity(VehiculoTo.noExiste())
                     .build();
         }
     }
@@ -60,13 +60,13 @@ public class VehiculoController {
             } else {
                 return Response.status(Response.Status.NOT_FOUND)
                         .header("mensaje", "Vehiculo no encontrado")
-                        .entity(VehiculoTo.NoExiste())
+                        .entity(VehiculoTo.noExiste())
                         .build();
             }
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
-                    .entity(VehiculoTo.NoExiste())
+                    .entity(VehiculoTo.noExiste())
                     .build();
         }
     }
@@ -82,9 +82,9 @@ public class VehiculoController {
                     .header("mensaje", "Vehiculo insertado")
                     .build();
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
-                    .entity(VehiculoTo.NoExiste())
+                    .entity(VehiculoTo.noExiste())
                     .build();
         }
     }
@@ -99,20 +99,21 @@ public class VehiculoController {
             if (vehiculoToTmp == null) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .header("mensaje", "Vehiculo no encontrado")
-                        .entity(VehiculoTo.NoExiste())
+                        .entity(VehiculoTo.noExiste())
                         .build();
             }
            else{
             vehiculoTo.setId(vehiculoToTmp.getId());
+            vehiculoTo.setPlaca(placa);
             iVehisuloService.actualizarVehiculo(vehiculoTo);
             return Response.ok(vehiculoTo)
                     .header("mensaje", "Vehiculo actualizado")
                     .build();
            }
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
-                    .entity(VehiculoTo.NoExiste())
+                    .entity(VehiculoTo.noExiste())
                     .build();
         }
     }
@@ -123,10 +124,10 @@ public class VehiculoController {
     public Response eliminarVehiculo(@PathParam("placa") String placa) {
         try {
             VehiculoTo vehiculoToTmp = iVehisuloService.buscarVehiculoPorPlaca(placa);
-            if (vehiculoToTmp == null || vehiculoToTmp.getMarca().equals("No existe")) {
+            if (vehiculoToTmp == null || vehiculoToTmp.getPlaca().equals("No existe")) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .header("mensaje", "Vehiculo no encontrado")
-                        .entity(VehiculoTo.NoExiste())
+                        .entity(VehiculoTo.noExiste())
                         .build();
             } else {
                 iVehisuloService.borrarVehiculo(placa);
@@ -135,9 +136,9 @@ public class VehiculoController {
                         .build();
             }
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
-                    .entity(VehiculoTo.NoExiste())
+                    .entity(VehiculoTo.noExiste())
                     .build();
         }
 

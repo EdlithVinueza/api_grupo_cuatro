@@ -19,33 +19,33 @@ public class VehiculoRepositoryImpl implements IVehiculoRepository {
     @Override
     @Transactional(value = Transactional.TxType.NOT_SUPPORTED)
     public List<Vehiculo> seleccionarTodosLosVehiculos() {
-        try
-        {
+        try {
             return this.entityManager.createQuery("SELECT v FROM Vehiculo v", Vehiculo.class).getResultList();
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
+
     @Override
     @Transactional(value = Transactional.TxType.NOT_SUPPORTED)
     public Vehiculo selecionarVehiculoPorPlaca(String placa) {
-        try{
-           TypedQuery<Vehiculo> query = this.entityManager.createQuery("SELECT v FROM Vehiculo v WHERE v.placa = :placa", Vehiculo.class);
+        try {
+            TypedQuery<Vehiculo> query = this.entityManager.createQuery("SELECT v FROM Vehiculo v WHERE v.placa = :placa", Vehiculo.class);
             query.setParameter("placa", placa);
             return query.getSingleResult();
-        } catch (Exception e){
-            return Vehiculo.NoExiste();
+        } catch (Exception e) {
+            return null;
         }
     }
 
     @Override
     @Transactional(value = Transactional.TxType.MANDATORY)
     public void insertarVehiculo(Vehiculo vehiculo) {
-        try{
+        try {
             this.entityManager.persist(vehiculo);
-        } catch (Exception e){
-            throw new UnsupportedOperationException("Unimplemented method 'insertarVehiculo'");
-        }       
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Error en el metodo 'insertarVehiculo'", e);
+        }
     }
 
     @Override
@@ -53,21 +53,24 @@ public class VehiculoRepositoryImpl implements IVehiculoRepository {
     public void actualizarVehiculo(Vehiculo vehiculo) {
         try {
             this.entityManager.merge(vehiculo);
-        } catch (Exception e){
-            throw new UnsupportedOperationException("Unimplemented method 'actualizarVehiculo'");
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Error en el metodo 'actualizarVehiculo'", e);
         }
     }
-
 
     @Override
     @Transactional(value = Transactional.TxType.MANDATORY)
     public void eliminarVehiculo(String placa) {
-        try{
-            this.entityManager.remove(this.selecionarVehiculoPorPlaca(placa));
-        } catch (Exception e){
-            throw new UnsupportedOperationException("Unimplemented method 'eliminarVehiculo'");
+        try {
+            TypedQuery<Vehiculo> query = this.entityManager.createQuery("SELECT v FROM Vehiculo v WHERE v.placa = :placa", Vehiculo.class);
+            query.setParameter("placa", placa);
+            Vehiculo vehiculo = query.getSingleResult();
+            if (vehiculo == null) {
+                throw new UnsupportedOperationException("Vehículo no encontrado con la placa: " + placa);
+            }
+            this.entityManager.remove(vehiculo);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("Error en el metodo 'eliminarVehiculo'", e);
         }
-       }
-
-   
+    }
 }
