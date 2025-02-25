@@ -90,5 +90,6 @@ public class UsuarioServiceImpl implements IUsuarioToService{
         Usuario tmp = iUsuarioRepository.seleccionarPorUsuarioYContrasenia(usuario, contrasenia);
         return convertirUsuarioAUsuarioTo.apply(tmp);
     }
+    
 
 }

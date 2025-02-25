@@ -112,7 +112,6 @@ public class UsuarioController {
                     .build();
         }
     }
-
     @PUT
     @Path("/{usuario}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -149,6 +148,30 @@ public class UsuarioController {
             return Response.ok()
                     .header("mensaje", "Usuario eliminado")
                     .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .header("mensaje", "Error en el servidor")
+                    .entity(UsuarioTo.noExiste())
+                    .build();
+        }
+    }
+    @POST
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response login(UsuarioTo usuarioTo) {
+        try {
+            UsuarioTo tmp = iUsuarioToService.buscarPorUsuarioToYContrasenia(usuarioTo.getUsuario(), usuarioTo.getContrasenia());
+            if (tmp != null && !tmp.getNombre().equals("No existe")) {
+                return Response.ok(tmp)
+                        .header("mensaje", "Usuario autenticado")
+                        .build();
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .header("mensaje", "Credenciales incorrectas")
+                        .entity(UsuarioTo.noExiste())
+                        .build();
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header("mensaje", "Error en el servidor")
